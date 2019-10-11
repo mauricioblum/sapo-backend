@@ -7,6 +7,9 @@
 /**
  * Resourceful controller for interacting with items
  */
+
+const Item = use('App/Models/Item')
+
 class ItemController {
   /**
    * Show a list of all items.
@@ -17,8 +20,7 @@ class ItemController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index ({ request, response, view }) {
-  }
+  async index ({ request, response, view }) {}
 
   /**
    * Render a form to be used for creating a new item.
@@ -29,8 +31,7 @@ class ItemController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async create ({ request, response, view }) {
-  }
+  async create ({ request, response, view }) {}
 
   /**
    * Create/save a new item.
@@ -41,6 +42,17 @@ class ItemController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
+    const data = request.only([
+      'name',
+      'type',
+      'category',
+      'color',
+      'description'
+    ])
+
+    const item = await Item.create({ ...data, active: true })
+
+    return item
   }
 
   /**
@@ -52,8 +64,7 @@ class ItemController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show ({ params, request, response, view }) {
-  }
+  async show ({ params, request, response, view }) {}
 
   /**
    * Render a form to update an existing item.
@@ -64,8 +75,7 @@ class ItemController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async edit ({ params, request, response, view }) {
-  }
+  async edit ({ params, request, response, view }) {}
 
   /**
    * Update item details.
@@ -75,8 +85,7 @@ class ItemController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update ({ params, request, response }) {
-  }
+  async update ({ params, request, response }) {}
 
   /**
    * Delete a item with id.
@@ -86,8 +95,7 @@ class ItemController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params, request, response }) {
-  }
+  async destroy ({ params, request, response }) {}
 }
 
 module.exports = ItemController
