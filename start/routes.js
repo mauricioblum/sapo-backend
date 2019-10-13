@@ -17,3 +17,7 @@
 const Route = use('Route')
 
 Route.post('/items', 'ItemController.store')
+Route.post('/login', 'LoginController.store')
+
+Route.get('/files/:id', 'FileController.show')
+Route.post('/files', 'FileController.store')
