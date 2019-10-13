@@ -17,7 +17,15 @@
 const Route = use('Route')
 
 Route.post('/items', 'ItemController.store')
-Route.post('/login', 'LoginController.store')
+Route.put('/items/:id', 'ItemController.edit').middleware(['auth'])
+
+Route.post('/admin', 'UserController.store')
+Route.post('/sessions', 'SessionController.store')
+
+Route.post('/user/login', 'LoginController.user')
 
 Route.get('/files/:id', 'FileController.show')
 Route.post('/files', 'FileController.store')
+
+Route.post('/search', 'SearchController.store')
+Route.post('/find', 'SearchController.find')

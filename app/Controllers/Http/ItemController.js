@@ -75,7 +75,17 @@ class ItemController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async edit ({ params, request, response, view }) {}
+  async edit ({ params, request, response, view }) {
+    const item = await Item.findOrFail(params.id)
+
+    const { active } = request.all()
+
+    item.active = active
+
+    await item.save()
+
+    return item
+  }
 
   /**
    * Update item details.

@@ -4,13 +4,12 @@ const Axios = use('Axios')
 
 class LoginController {
   /**
-   * Create/save a new item.
-   * POST items
+   *
    *
    * @param {object} ctx
    * @param {Request} ctx.request
    */
-  async store ({ request }) {
+  async user ({ request }) {
     const data = request.only(['username', 'password'])
 
     const login = await Axios.post(
@@ -23,6 +22,8 @@ class LoginController {
 
     return user.data
   }
+
+  async admin ({ request }) {}
 }
 
 module.exports = LoginController
