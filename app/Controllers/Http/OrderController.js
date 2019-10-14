@@ -75,21 +75,6 @@ class OrderController {
       )
     })
 
-    await Mail.send(
-      ['emails.confirm_order'],
-      {
-        name: item.name,
-        category: category.name,
-        color: color.name
-      },
-      message => {
-        message
-          .to(data.email)
-          .from('admin@sapo.canoas.ifrs.edu.br', 'SAPO | IFRS Canoas')
-          .subject('Confirmação de Pedido')
-      }
-    )
-
     return order
   }
 

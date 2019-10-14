@@ -9,6 +9,9 @@
  */
 
 const Item = use('App/Models/Item')
+const Color = use('App/Models/Color')
+const Category = use('App/Models/Category')
+const Mail = use('Mail')
 
 class ItemController {
   /**
@@ -41,7 +44,7 @@ class ItemController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ request, response }) {
+  async store ({ request }) {
     const data = request.only([
       'name',
       'type',
@@ -51,6 +54,28 @@ class ItemController {
     ])
 
     const item = await Item.create({ ...data, active: true })
+    const { to } = request.get()
+
+    if (to) {
+      const category = await Category.find(item.category)
+      const color = await Color.find(item.color)
+
+      await Mail.send(
+        ['emails.confirm_item'],
+        {
+          name: item.name,
+          category: category.name,
+          color: color.name,
+          description: item.description
+        },
+        message => {
+          message
+            .to(to)
+            .from('admin@sapo.canoas.ifrs.edu.br', 'SAPO | IFRS Canoas')
+            .subject('Confirmação de Pedido')
+        }
+      )
+    }
 
     return item
   }
