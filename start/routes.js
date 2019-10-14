@@ -29,3 +29,6 @@ Route.post('/files', 'FileController.store')
 
 Route.post('/search', 'SearchController.store')
 Route.post('/find', 'SearchController.find')
+
+Route.get('/order', 'OrderController.index')
+Route.post('/order', 'OrderController.store')

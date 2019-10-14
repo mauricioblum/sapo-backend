@@ -19,6 +19,10 @@ class Item extends Model {
   category () {
     return this.hasOne('App/Models/Category')
   }
+
+  image () {
+    return this.hasOne('App/Models/Files')
+  }
 }
 
 module.exports = Item

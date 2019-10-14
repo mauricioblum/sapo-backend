@@ -8,12 +8,10 @@ class OrderSchema extends Schema {
     this.create('orders', table => {
       table.increments()
       table.string('name', 254).notNullable()
-      table
-        .string('email', 254)
-        .notNullable()
-        .unique()
+      table.string('email', 254).notNullable()
       table
         .integer('status')
+        .notNullable()
         .unsigned()
         .references('id')
         .inTable('statuses')
@@ -21,6 +19,7 @@ class OrderSchema extends Schema {
         .onDelete('SET NULL')
       table
         .integer('id_item')
+        .notNullable()
         .unsigned()
         .references('id')
         .inTable('items')
