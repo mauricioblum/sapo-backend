@@ -7,10 +7,6 @@ class Color extends Model {
   static boot () {
     super.boot()
   }
-
-  items () {
-    return this.hasMany('App/Models/Item')
-  }
 }
 
 module.exports = Color

@@ -8,20 +8,8 @@ class Item extends Model {
     super.boot()
   }
 
-  itemType () {
-    return this.hasOne('App/Models/ItemType')
-  }
-
-  color () {
-    return this.hasOne('App/Models/Color')
-  }
-
-  category () {
-    return this.hasOne('App/Models/Category')
-  }
-
   image () {
-    return this.hasOne('App/Models/Files')
+    return this.hasOne('App/Models/File')
   }
 }
 

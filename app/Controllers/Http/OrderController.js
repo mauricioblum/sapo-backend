@@ -5,6 +5,11 @@
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 const Order = use('App/Models/Order')
+const Item = use('App/Models/Item')
+const Color = use('App/Models/Color')
+const Category = use('App/Models/Category')
+const User = use('App/Models/User')
+const Mail = use('Mail')
 
 /**
  * Resourceful controller for interacting with orders
@@ -43,7 +48,47 @@ class OrderController {
   async store ({ request, response }) {
     const data = request.only(['id_item', 'name', 'email'])
 
+    const item = await Item.findOrFail(data.id_item)
+    const color = await Color.find(item.color)
+    const category = await Category.find(item.category)
+
     const order = await Order.create({ ...data, status: 1 })
+
+    const admins = await User.all()
+
+    admins.toJSON().forEach(async admin => {
+      await Mail.send(
+        ['emails.new_order'],
+        {
+          username: data.name,
+          email: data.email,
+          name: item.name,
+          category: category.name,
+          color: color.name
+        },
+        message => {
+          message
+            .to(admin.email)
+            .from('admin@sapo.canoas.ifrs.edu.br', 'SAPO | IFRS Canoas')
+            .subject('Um novo pedido foi registrado no sistema!')
+        }
+      )
+    })
+
+    await Mail.send(
+      ['emails.confirm_order'],
+      {
+        name: item.name,
+        category: category.name,
+        color: color.name
+      },
+      message => {
+        message
+          .to(data.email)
+          .from('admin@sapo.canoas.ifrs.edu.br', 'SAPO | IFRS Canoas')
+          .subject('Confirmação de Pedido')
+      }
+    )
 
     return order
   }
