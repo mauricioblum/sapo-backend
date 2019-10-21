@@ -23,7 +23,26 @@ class ItemController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index ({ request, response, view }) {}
+  async index ({ request, response }) {
+    const items = Item.all()
+    const { type } = request.get()
+
+    if (type) {
+      if (type === 'lost') {
+        return Item.query()
+          .where('type', 1)
+          .andWhere('active', true)
+          .fetch()
+      } else if (type === 'found') {
+        return Item.query()
+          .where('type', 2)
+          .andWhere('active', true)
+          .fetch()
+      }
+    } else {
+      return items
+    }
+  }
 
   /**
    * Render a form to be used for creating a new item.
@@ -53,7 +72,7 @@ class ItemController {
       'description'
     ])
 
-    const item = await Item.create({ ...data, active: true })
+    const item = await Item.create({ ...data, active: false })
     const { to } = request.get()
 
     if (to) {

@@ -16,7 +16,9 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-Route.post('/items', 'ItemController.store')
+Route.get('/items', 'ItemController.index')
+
+Route.post('/items', 'ItemController.store').validator('Item')
 Route.put('/items/:id', 'ItemController.edit').middleware(['auth'])
 
 Route.post('/admin', 'UserController.store')
