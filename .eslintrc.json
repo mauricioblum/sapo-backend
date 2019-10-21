@@ -1,6 +1,5 @@
 {
   "env": {
-    "commonjs": true,
     "es6": true,
     "node": true
   },
@@ -13,9 +12,5 @@
   "parserOptions": {
     "ecmaVersion": 2018
   },
-  "rules": {
-    "semi": "error",
-    "space-before-function-paren": "error",
-    "space-before-blocks": "error"
-  }
+  "rules": {}
 }

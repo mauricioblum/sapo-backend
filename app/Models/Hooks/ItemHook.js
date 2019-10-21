@@ -19,7 +19,7 @@ ItemHook.sendMailToAdmins = async itemInstance => {
         message
           .to(admin.email)
           .from('admin@sapo.canoas.ifrs.edu.br', 'SAPO | IFRS Canoas')
-          .subject('Um novo pedido foi registrado no sistema!')
+          .subject('Um novo item foi registrado no sistema!')
       }
     )
   })

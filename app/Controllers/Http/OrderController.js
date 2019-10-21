@@ -48,32 +48,8 @@ class OrderController {
   async store ({ request, response }) {
     const data = request.only(['id_item', 'name', 'email'])
 
-    const item = await Item.findOrFail(data.id_item)
-    const color = await Color.find(item.color)
-    const category = await Category.find(item.category)
-
+    // const item = await Item.findOrFail(data.id_item)
     const order = await Order.create({ ...data, status: 1 })
-
-    const admins = await User.all()
-
-    admins.toJSON().forEach(async admin => {
-      await Mail.send(
-        ['emails.new_order'],
-        {
-          username: data.name,
-          email: data.email,
-          name: item.name,
-          category: category.name,
-          color: color.name
-        },
-        message => {
-          message
-            .to(admin.email)
-            .from('admin@sapo.canoas.ifrs.edu.br', 'SAPO | IFRS Canoas')
-            .subject('Um novo pedido foi registrado no sistema!')
-        }
-      )
-    })
 
     return order
   }
@@ -108,7 +84,22 @@ class OrderController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update ({ params, request, response }) {}
+  async update ({ params, request, response }) {
+    const orderId = params.orderId
+    const status = request.input('status', null)
+
+    if (!status || status > 3 || status <= 0) {
+      return response.status(417).send({ error: 'Invalid status code' })
+    }
+
+    const order = await Order.findOrFail(orderId)
+
+    order.status = status
+
+    await order.save()
+
+    return order
+  }
 
   /**
    * Delete a order with id.

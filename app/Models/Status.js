@@ -9,7 +9,7 @@ class Status extends Model {
   }
 
   orders () {
-    return this.hasMany('App/Models/Order')
+    return this.belongsTo('App/Models/Order')
   }
 }
 

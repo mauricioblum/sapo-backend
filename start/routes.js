@@ -32,3 +32,4 @@ Route.post('/find', 'SearchController.find')
 
 Route.get('/order', 'OrderController.index')
 Route.post('/order', 'OrderController.store')
+Route.put('/order/:orderId', 'OrderController.update').middleware(['auth'])
