@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +17,7 @@
 const Route = use('Route')
 
 Route.get('/items', 'ItemController.index')
-
+Route.get('/items/:id', 'ItemController.show')
 Route.post('/items', 'ItemController.store').validator('Item')
 Route.put('/items/:id', 'ItemController.edit').middleware(['auth'])
 

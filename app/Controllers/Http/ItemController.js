@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -10,6 +10,7 @@
 
 const Item = use('App/Models/Item')
 const Color = use('App/Models/Color')
+const File = use('App/Models/File')
 const Category = use('App/Models/Category')
 const Mail = use('Mail')
 
@@ -29,15 +30,19 @@ class ItemController {
 
     if (type) {
       if (type === 'lost') {
-        return Item.query()
-          .where('type', 1)
-          .andWhere('active', true)
-          .fetch()
+        return (
+          Item.query()
+            .where('type', 1)
+            // .andWhere('active', true)
+            .fetch()
+        )
       } else if (type === 'found') {
-        return Item.query()
-          .where('type', 2)
-          .andWhere('active', true)
-          .fetch()
+        return (
+          Item.query()
+            .where('type', 2)
+            // .andWhere('active', true)
+            .fetch()
+        )
       }
     } else {
       return items
@@ -63,40 +68,53 @@ class ItemController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ request }) {
-    const data = request.only([
-      'name',
-      'type',
-      'category',
-      'color',
-      'description'
-    ])
+  async store ({ request, response }) {
+    try {
+      const data = request.only([
+        'name',
+        'type',
+        'category',
+        'color',
+        'location',
+        'period',
+        'description'
+      ])
+      if (data.type > 2 || data.type < 0) throw new Error('Invalid Type')
+      const { to } = request.get()
+      const category = await Category.find(data.category)
+      const color = await Color.find(data.color)
 
-    const item = await Item.create({ ...data, active: false })
-    const { to } = request.get()
+      if (!category) throw new Error('Invalid Category')
+      if (!color) throw new Error('Invalid Color')
+      const file = await File.last()
 
-    if (to) {
-      const category = await Category.find(item.category)
-      const color = await Color.find(item.color)
+      const item = await Item.create({
+        ...data,
+        active: false,
+        file_id: file ? file.id : null
+      })
+      if (to) {
+        await Mail.send(
+          ['emails.confirm_item'],
+          {
+            name: item.name,
+            category: category.name,
+            color: color.name,
+            description: item.description
+          },
+          message => {
+            message
+              .to(to)
+              .from('admin@sapo.canoas.ifrs.edu.br', 'SAPO | IFRS Canoas')
+              .subject('Confirmação de Pedido')
+          }
+        )
+      }
 
-      await Mail.send(
-        ['emails.confirm_item'],
-        {
-          name: item.name,
-          category: category.name,
-          color: color.name,
-          description: item.description
-        },
-        message => {
-          message
-            .to(to)
-            .from('admin@sapo.canoas.ifrs.edu.br', 'SAPO | IFRS Canoas')
-            .subject('Confirmação de Pedido')
-        }
-      )
+      return item
+    } catch (err) {
+      return response.status(417).send({ error: err.message })
     }
-
-    return item
   }
 
   /**
@@ -108,7 +126,11 @@ class ItemController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show ({ params, request, response, view }) {}
+  async show ({ params, request, response, view }) {
+    const item = await Item.findOrFail(params.id)
+
+    return item
+  }
 
   /**
    * Render a form to update an existing item.
