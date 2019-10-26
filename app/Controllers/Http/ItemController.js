@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -9,9 +9,7 @@
  */
 
 const Item = use('App/Models/Item')
-const Color = use('App/Models/Color')
 const File = use('App/Models/File')
-const Category = use('App/Models/Category')
 const Mail = use('Mail')
 
 class ItemController {
@@ -73,6 +71,7 @@ class ItemController {
       const data = request.only([
         'name',
         'type',
+        'size',
         'category',
         'color',
         'location',
@@ -81,11 +80,6 @@ class ItemController {
       ])
       if (data.type > 2 || data.type < 0) throw new Error('Invalid Type')
       const { to } = request.get()
-      const category = await Category.find(data.category)
-      const color = await Color.find(data.color)
-
-      if (!category) throw new Error('Invalid Category')
-      if (!color) throw new Error('Invalid Color')
       const file = await File.last()
 
       const item = await Item.create({
@@ -98,8 +92,9 @@ class ItemController {
           ['emails.confirm_item'],
           {
             name: item.name,
-            category: category.name,
-            color: color.name,
+            size: item.size_name,
+            category: item.category_name,
+            color: item.color_name,
             description: item.description
           },
           message => {

@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 const ItemHook = (exports = module.exports = {})
 const Mail = use('Mail')
@@ -6,6 +6,7 @@ const User = use('App/Models/User')
 const Env = use('Env')
 const Color = use('App/Models/Color')
 const Category = use('App/Models/Category')
+const Size = use('App/Models/Size')
 
 ItemHook.sendMailToAdmins = async itemInstance => {
   const admins = await User.all()
@@ -25,22 +26,26 @@ ItemHook.sendMailToAdmins = async itemInstance => {
       }
     )
   })
-};
+}
 
-ItemHook.getColorAndCategory = async itemInstance => {
+ItemHook.getColorCategoryAndSize = async itemInstance => {
   const color = await Color.findOrFail(itemInstance.color)
   const category = await Category.findOrFail(itemInstance.category)
+  const size = await Size.findOrFail(itemInstance.size)
 
   itemInstance.color_name = color.name
   itemInstance.category_name = category.name
-};
+  itemInstance.size_name = size.name
+}
 
-ItemHook.getAllColorAndCategory = async instances => {
-  console.log(instances)
+ItemHook.getAllColorCategoryAndSize = async instances => {
   for (const itemInstance of instances) {
     const color = await Color.findOrFail(itemInstance.color)
     const category = await Color.findOrFail(itemInstance.category)
+    const size = await Size.findOrFail(itemInstance.size)
+
     itemInstance.color_name = color.name
     itemInstance.category_name = category.name
+    itemInstance.size_name = size.name
   }
 }

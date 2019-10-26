@@ -2,7 +2,7 @@
 
 /*
 |--------------------------------------------------------------------------
-| CategorySeeder
+| SizeSeeder
 |--------------------------------------------------------------------------
 |
 | Make use of the Factory instance to seed database with dummy data or
@@ -13,19 +13,15 @@
 /** @type {import('@adonisjs/lucid/src/Factory')} */
 const Database = use('Database')
 
-class CategorySeeder {
+class SizeSeeder {
   async run () {
-    await Database.table('categories').insert([
-      { name: 'Materiais Escolares' },
-      { name: 'Agasalhos' },
-      { name: 'Roupas' },
-      { name: 'Mochilas e Bolsas' },
-      { name: 'Produtos de Beleza' },
-      { name: 'Acessórios' },
-      { name: 'Livros' },
-      { name: 'Outros' }
+    await Database.table('sizes').insert([
+      { name: 'Muito Pequeno' },
+      { name: 'Pequeno' },
+      { name: 'Médio' },
+      { name: 'Grande' }
     ])
   }
 }
 
-module.exports = CategorySeeder
+module.exports = SizeSeeder

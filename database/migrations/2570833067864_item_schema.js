@@ -23,6 +23,13 @@ class ItemSchema extends Schema {
         .onUpdate('CASCADE')
         .onDelete('SET NULL')
       table
+        .integer('size')
+        .unsigned()
+        .references('id')
+        .inTable('sizes')
+        .onUpdate('CASCADE')
+        .onDelete('SET NULL')
+      table
         .integer('color')
         .unsigned()
         .references('id')
