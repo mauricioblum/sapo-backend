@@ -17,7 +17,7 @@ class Item extends Model {
   }
 
   user () {
-    return this.hasOne('App/Models/User')
+    return this.belongsTo('App/Models/User', 'user_id')
   }
 }
 

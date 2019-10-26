@@ -22,14 +22,21 @@ class ItemController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index ({ request, response }) {
-    const items = Item.all()
+  async index ({ request, response, auth }) {
+    let items = await Item.all()
     const { type } = request.get()
+
+    if (auth.user) {
+      items = await Item.query().where('user_id', auth.user.id).fetch()
+
+      return items
+    }
 
     if (type) {
       if (type === 'lost') {
         return (
           Item.query()
+            .with('user')
             .where('type', 1)
             // .andWhere('active', true)
             .fetch()
@@ -37,6 +44,7 @@ class ItemController {
       } else if (type === 'found') {
         return (
           Item.query()
+            .with('user')
             .where('type', 2)
             // .andWhere('active', true)
             .fetch()
