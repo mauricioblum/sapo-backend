@@ -66,7 +66,7 @@ class ItemController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ request, response }) {
+  async store ({ request, response, auth }) {
     try {
       const data = request.only([
         'name',
@@ -84,6 +84,7 @@ class ItemController {
 
       const item = await Item.create({
         ...data,
+        user_id: auth.user.id,
         active: false,
         file_id: file ? file.id : null
       })

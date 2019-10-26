@@ -41,7 +41,7 @@ ItemHook.getColorCategoryAndSize = async itemInstance => {
 ItemHook.getAllColorCategoryAndSize = async instances => {
   for (const itemInstance of instances) {
     const color = await Color.findOrFail(itemInstance.color)
-    const category = await Color.findOrFail(itemInstance.category)
+    const category = await Category.findOrFail(itemInstance.category)
     const size = await Size.findOrFail(itemInstance.size)
 
     itemInstance.color_name = color.name

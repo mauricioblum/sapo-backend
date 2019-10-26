@@ -25,6 +25,7 @@ class ColorSeeder {
       { name: 'Azul' },
       { name: 'Marrom' },
       { name: 'Cinza' },
+      { name: 'Rosa' },
       { name: 'Outro' }
     ])
   }

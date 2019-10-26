@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /*
 |--------------------------------------------------------------------------
@@ -18,11 +18,14 @@ const Route = use('Route')
 
 Route.get('/items', 'ItemController.index')
 Route.get('/items/:id', 'ItemController.show')
-Route.post('/items', 'ItemController.store').validator('Item')
+Route.post('/items', 'ItemController.store').middleware(['auth']).validator('Item')
 Route.put('/items/:id', 'ItemController.edit').middleware(['auth'])
 
+Route.get('/user/get', 'UserController.show').middleware(['auth'])
+
 Route.post('/admin', 'UserController.store')
-Route.post('/sessions', 'SessionController.store')
+Route.post('/sessions/admin', 'SessionController.admin')
+Route.post('/sessions/user', 'SessionController.user')
 
 Route.post('/user/login', 'LoginController.user')
 

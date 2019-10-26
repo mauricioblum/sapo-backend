@@ -22,18 +22,18 @@ class SearchController {
   async index ({ request, response, view }) {}
 
   async find ({ request, response }) {
-    const data = request.only(['name', 'category', 'color'])
+    const data = request.only(['name', 'category', 'color', 'size'])
 
     let currentSearch
 
-    if (data.name && data.category && data.color) {
+    if (data.name && data.size && data.category) {
       currentSearch = await Item.query()
         .where('name', 'ilike', data.name)
         .andWhere('category', data.category)
-        .andWhere('color', data.color)
+        .andWhere('size', data.size)
         .andWhere('type', 1)
         .fetch()
-      if (currentSearch.rows.length) return currentSearch
+      return currentSearch
     }
 
     if (data.name && data.category) {
@@ -42,25 +42,25 @@ class SearchController {
         .andWhere('category', data.category)
         .andWhere('type', 1)
         .fetch()
-      if (currentSearch.rows.length) return currentSearch
+      return currentSearch
     }
 
-    if (data.name && data.color) {
+    if (data.name && data.size) {
       currentSearch = await Item.query()
         .where('name', 'ilike', data.name)
-        .andWhere('color', data.color)
+        .andWhere('size', data.size)
         .andWhere('type', 1)
         .fetch()
-      if (currentSearch.rows.length) return currentSearch
+      return currentSearch
     }
 
-    if (data.category && data.color) {
+    if (data.category && data.size) {
       currentSearch = await Item.query()
         .where('category', data.category)
-        .andWhere('color', data.color)
+        .andWhere('size', data.size)
         .andWhere('type', 1)
         .fetch()
-      if (currentSearch.rows.length) return currentSearch
+      return currentSearch
     }
 
     if (data.name) {
@@ -68,7 +68,7 @@ class SearchController {
         .where('name', 'ilike', data.name)
         .andWhere('type', 1)
         .fetch()
-      if (currentSearch.rows.length) return currentSearch
+      return currentSearch
     }
 
     if (data.category) {
@@ -76,15 +76,15 @@ class SearchController {
         .where('category', data.category)
         .andWhere('type', 1)
         .fetch()
-      if (currentSearch.rows.length) return currentSearch
+      return currentSearch
     }
 
-    if (data.color) {
+    if (data.size) {
       currentSearch = await Item.query()
-        .where('color', data.color)
+        .where('size', data.size)
         .andWhere('type', 1)
         .fetch()
-      if (currentSearch.rows.length) return currentSearch
+      return currentSearch
     }
 
     return currentSearch

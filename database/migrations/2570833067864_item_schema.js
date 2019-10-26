@@ -9,6 +9,13 @@ class ItemSchema extends Schema {
       table.increments()
       table.string('name', 254).notNullable()
       table
+        .integer('user_id')
+        .unsigned()
+        .references('id')
+        .inTable('users')
+        .onUpdate('CASCADE')
+        .onDelete('SET NULL')
+      table
         .integer('type')
         .unsigned()
         .references('id')
