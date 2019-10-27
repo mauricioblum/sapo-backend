@@ -7,9 +7,11 @@ class Item extends Model {
   static boot () {
     super.boot()
 
-    this.addHook('afterSave', 'ItemHook.sendMailToAdmins')
+    this.addHook('afterCreate', 'ItemHook.sendMailToAdmins')
+    this.addHook('afterSave', 'ItemHook.resolveItemMail')
     this.addHook('afterFind', 'ItemHook.getColorCategoryAndSize')
     this.addHook('afterFetch', 'ItemHook.getAllColorCategoryAndSize')
+    this.addHook('beforeUpdate', 'ItemHook.clearItemParams')
   }
 
   file () {

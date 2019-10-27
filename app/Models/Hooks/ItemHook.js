@@ -28,6 +28,25 @@ ItemHook.sendMailToAdmins = async itemInstance => {
   })
 }
 
+ItemHook.resolveItemMail = async itemInstance => {
+  if (itemInstance.status_id === 2) {
+    const user = await User.findOrFail(itemInstance.user_id)
+    await Mail.send(
+      ['emails.item_found'],
+      {
+        itemName: itemInstance.name,
+        url: `${Env.get('APP_URL')}/items/${itemInstance.id}`
+      },
+      message => {
+        message
+          .to(user.email)
+          .from('admin@sapo.canoas.ifrs.edu.br', 'SAPO | IFRS Canoas')
+          .subject('Seu item foi encontrado!')
+      }
+    )
+  }
+}
+
 ItemHook.getColorCategoryAndSize = async itemInstance => {
   const color = await Color.findOrFail(itemInstance.color)
   const category = await Category.findOrFail(itemInstance.category)
@@ -48,4 +67,14 @@ ItemHook.getAllColorCategoryAndSize = async instances => {
     itemInstance.category_name = category.name
     itemInstance.size_name = size.name
   }
+}
+
+ItemHook.clearItemParams = async itemInstance => {
+  const cleanedItem = itemInstance
+
+  cleanedItem.color_name = undefined
+  cleanedItem.category_name = undefined
+  cleanedItem.size_name = undefined
+
+  return cleanedItem
 }

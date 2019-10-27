@@ -38,7 +38,7 @@ class ItemController {
           Item.query()
             .with('user')
             .where('type', 1)
-            // .andWhere('active', true)
+            .andWhere('status_id', 1)
             .fetch()
         )
       } else if (type === 'found') {
@@ -46,13 +46,18 @@ class ItemController {
           Item.query()
             .with('user')
             .where('type', 2)
-            // .andWhere('active', true)
+            .andWhere('status_id', 1)
             .fetch()
         )
       }
     } else {
       return items
     }
+  }
+
+  async resolved ({ request, response, view }) {
+    const items = await Item.query().with('user').where('status_id', 2).fetch()
+    return items
   }
 
   /**
@@ -94,6 +99,7 @@ class ItemController {
         ...data,
         user_id: auth.user.id,
         active: false,
+        status_id: 1,
         file_id: file ? file.id : null
       })
       if (to) {
@@ -148,9 +154,21 @@ class ItemController {
   async edit ({ params, request, response, view }) {
     const item = await Item.findOrFail(params.id)
 
-    const { active } = request.all()
+    const data = request.only(['active'])
 
-    item.active = active
+    item.active = data.active
+
+    await item.save()
+
+    return item
+  }
+
+  async status ({ params, request }) {
+    const item = await Item.findOrFail(params.id)
+
+    const data = request.only(['status_id'])
+
+    item.status_id = data.status_id
 
     await item.save()
 
@@ -175,7 +193,16 @@ class ItemController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params, request, response }) {}
+  async destroy ({ params, request, response }) {
+    const item = await Item.findOrFail(params.id)
+
+    try {
+      item.delete()
+      return response.status(200).send({ message: 'Item deleted!' })
+    } catch (err) {
+      return response.status(301).send({ error: 'Erro ao remover!' })
+    }
+  }
 }
 
 module.exports = ItemController

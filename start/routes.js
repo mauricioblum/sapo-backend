@@ -18,8 +18,11 @@ const Route = use('Route')
 
 Route.get('/items', 'ItemController.index')
 Route.get('/items/:id', 'ItemController.show')
+Route.get('/reports/resolved', 'ItemController.resolved')
 Route.post('/items', 'ItemController.store').middleware(['auth']).validator('Item')
 Route.put('/items/:id', 'ItemController.edit').middleware(['auth'])
+Route.put('/items/status/:id', 'ItemController.status').middleware(['auth'])
+Route.delete('/items/:id', 'ItemController.destroy').middleware(['auth'])
 
 Route.get('/user/get', 'UserController.show').middleware(['auth'])
 

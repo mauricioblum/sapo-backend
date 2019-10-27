@@ -17,7 +17,6 @@ class StatusSeeder {
   async run () {
     await Database.table('statuses').insert([
       { name: 'AGUARDANDO' },
-      { name: 'ATIVO' },
       { name: 'RESOLVIDO' }
     ])
   }
