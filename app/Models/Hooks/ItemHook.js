@@ -29,7 +29,7 @@ ItemHook.sendMailToAdmins = async itemInstance => {
 }
 
 ItemHook.resolveItemMail = async itemInstance => {
-  if (itemInstance.status_id === 2) {
+  if (itemInstance.status_id === 2 && itemInstance.type === 1) {
     const user = await User.findOrFail(itemInstance.user_id)
     await Mail.send(
       ['emails.item_found'],

@@ -43,13 +43,6 @@ class ItemSchema extends Schema {
         .inTable('colors')
         .onUpdate('CASCADE')
         .onDelete('SET NULL')
-      table
-        .integer('image_id')
-        .unsigned()
-        .references('id')
-        .inTable('files')
-        .onUpdate('CASCADE')
-        .onDelete('SET NULL')
       table.string('description', 254)
       table.boolean('active')
       table.timestamps()
