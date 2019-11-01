@@ -35,7 +35,7 @@ ItemHook.resolveItemMail = async itemInstance => {
       ['emails.item_found'],
       {
         itemName: itemInstance.name,
-        url: `${Env.get('WEBSITE_URL')}`
+        url: `${Env.get('WEBSITE_URL')}/user/item/view`
       },
       message => {
         message
