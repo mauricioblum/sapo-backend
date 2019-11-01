@@ -16,7 +16,7 @@ ItemHook.sendMailToAdmins = async itemInstance => {
       ['emails.new_order'],
       {
         name: itemInstance.name,
-        url: `${Env.get('APP_URL')}/items/${itemInstance.id}`
+        url: `${Env.get('WEBSITE_URL')}/admin/item/${itemInstance.id}`
       },
       message => {
         message
@@ -35,7 +35,7 @@ ItemHook.resolveItemMail = async itemInstance => {
       ['emails.item_found'],
       {
         itemName: itemInstance.name,
-        url: `${Env.get('APP_URL')}/items/${itemInstance.id}`
+        url: `${Env.get('WEBSITE_URL')}`
       },
       message => {
         message
