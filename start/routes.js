@@ -35,9 +35,13 @@ Route.post('/user/login', 'LoginController.user')
 Route.get('/files/:id', 'FileController.show')
 Route.post('/files', 'FileController.store')
 
-Route.post('/search', 'SearchController.store')
+// Route.post('/search', 'SearchController.store')
 Route.post('/find', 'SearchController.find')
+Route.post('/search', 'SearchController.search')
 
 Route.get('/order', 'OrderController.index')
 Route.post('/order', 'OrderController.store')
 Route.put('/order/:orderId', 'OrderController.update').middleware(['auth'])
+
+Route.get('/options/semester/get', 'OptionController.index')
+Route.post('/options/semester/set', 'OptionController.update')

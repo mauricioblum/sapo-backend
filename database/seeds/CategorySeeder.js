@@ -23,6 +23,7 @@ class CategorySeeder {
       { name: 'Produtos de Beleza' },
       { name: 'Acessórios' },
       { name: 'Livros' },
+      { name: 'Eletrônicos' },
       { name: 'Outros' }
     ])
   }

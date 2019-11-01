@@ -89,18 +89,17 @@ class ItemController {
         'color',
         'location',
         'period',
-        'description'
+        'description',
+        'file_id'
       ])
       if (data.type > 2 || data.type < 0) throw new Error('Invalid Type')
       const { to } = request.get()
-      const file = await File.last()
 
       const item = await Item.create({
         ...data,
         user_id: auth.user.id,
         active: false,
-        status_id: 1,
-        file_id: file ? file.id : null
+        status_id: 1
       })
       if (to) {
         await Mail.send(

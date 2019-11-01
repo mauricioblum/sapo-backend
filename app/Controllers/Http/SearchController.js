@@ -21,6 +21,32 @@ class SearchController {
    */
   async index ({ request, response, view }) {}
 
+  async search ({ request, response }) {
+    const data = request.only(['name', 'category', 'color', 'size'])
+    const existingData = Object.entries(data).reduce((a, [k, v]) => (v ? { ...a, [k]: v } : a), {})
+    console.log(existingData)
+
+    let items
+    if (existingData.name) {
+      const remainingData = existingData
+      delete remainingData.name
+      if (remainingData.category || remainingData.color || remainingData.size) {
+        items = await Item.query()
+          .where('name', 'LIKE', `%${data.name}%`)
+          .andWhere(remainingData).orderBy('id', 'asc').fetch()
+      } else {
+        items = await Item.query()
+          .where('name', 'LIKE', `%${data.name}%`)
+          .orderBy('id', 'asc').fetch()
+      }
+    } else {
+      items = await Item.query()
+        .where(existingData).orderBy('id', 'asc').fetch()
+    }
+
+    return items
+  }
+
   async find ({ request, response }) {
     const data = request.only(['name', 'category', 'color', 'size'])
 
