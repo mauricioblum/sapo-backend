@@ -9,7 +9,7 @@
  */
 
 const Item = use('App/Models/Item')
-const File = use('App/Models/File')
+const Database = use('Database')
 const Mail = use('Mail')
 
 class ItemController {
@@ -205,10 +205,10 @@ class ItemController {
 
   async reset ({ response }) {
     try {
-      await Item.truncate()
+      await Database.raw('TRUNCATE items CASCADE')
       return response.status(200).send({ message: 'All items were deleted!' })
     } catch (err) {
-      return response.status(301).send({ error: 'Erro ao resetar!' })
+      return response.status(301).send({ error: 'Erro ao resetar!', msg: err })
     }
   }
 }
