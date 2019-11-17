@@ -23,6 +23,7 @@ Route.post('/items', 'ItemController.store').middleware(['auth']).validator('Ite
 Route.put('/items/:id', 'ItemController.edit').middleware(['auth'])
 Route.put('/items/status/:id', 'ItemController.status').middleware(['auth'])
 Route.delete('/items/:id', 'ItemController.destroy').middleware(['auth'])
+Route.delete('/items/reset', 'ItemController.reset').middleware(['auth'])
 
 Route.get('/user/get', 'UserController.show').middleware(['auth'])
 

@@ -202,6 +202,15 @@ class ItemController {
       return response.status(301).send({ error: 'Erro ao remover!' })
     }
   }
+
+  async reset ({ response }) {
+    try {
+      await Item.truncate()
+      return response.status(200).send({ message: 'All items were deleted!' })
+    } catch (err) {
+      return response.status(301).send({ error: 'Erro ao resetar!' })
+    }
+  }
 }
 
 module.exports = ItemController
