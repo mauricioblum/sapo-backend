@@ -33,15 +33,18 @@ class SearchController {
       if (remainingData.category || remainingData.color || remainingData.size) {
         items = await Item.query()
           .where('name', 'LIKE', `%${data.name}%`)
+          .andWhere('active', true)
           .andWhere(remainingData).orderBy('id', 'asc').fetch()
       } else {
         items = await Item.query()
           .where('name', 'LIKE', `%${data.name}%`)
+          .andWhere('active', true)
           .orderBy('id', 'asc').fetch()
       }
     } else {
       items = await Item.query()
-        .where(existingData).orderBy('id', 'asc').fetch()
+        .where(existingData).orderBy('id', 'asc')
+        .andWhere('active', true).fetch()
     }
 
     return items
